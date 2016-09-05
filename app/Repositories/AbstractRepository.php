@@ -41,7 +41,7 @@ abstract class AbstractRepository
         return $this->make($with)->where($key, '=', $value)->get()->toArray();
     }
 
-    public function getAllByIds($ids,$with = array())
+    public function getAllByIds($ids, $with = array())
     {
         $query = $this->make($with);
         $data = $query->whereIn('id',$ids)->get()->toArray();

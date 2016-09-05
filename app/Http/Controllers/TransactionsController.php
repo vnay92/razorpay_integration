@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Gateways\TransactionsGateway;
+use Illuminate\Http\Request;
 
 class TransactionsController extends Controller
 {
     public function __construct(
+        Request $request,
         TransactionsGateway $transactionsGateway
     ) {
+        $this->request = $request;
         $this->transactionsGateway = $transactionsGateway;
     }
 
@@ -26,10 +29,9 @@ class TransactionsController extends Controller
 
     public function create()
     {
-        return response()->json([
-            'status' => 200,
-            'message' => 'done'
-        ]);
+        $input = $this->request->json()->all();
+        $response = $this->transactionsGateway->create($input);
+        return response()->json($response);
     }
 
 }

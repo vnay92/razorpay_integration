@@ -10,4 +10,9 @@ class TransactionsRepository extends AbstractRepository
     {
         $this->model = $model;
     }
+
+    public function create($data)
+    {
+        return $this->model->create($data);
+    }
 }
