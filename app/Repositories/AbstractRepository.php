@@ -30,23 +30,6 @@ abstract class AbstractRepository
         }
     }
 
-    /**
-     * Find many entities by key value (Select * key=value)
-     *
-     * @param string $key
-     * @param string $value
-     */
-    public function getManyBy($key, $value, array $with = [])
-    {
-        return $this->make($with)->where($key, '=', $value)->get()->toArray();
-    }
-
-    public function getAllByIds($ids, $with = array())
-    {
-        $query = $this->make($with);
-        $data = $query->whereIn('id',$ids)->get()->toArray();
-        return $data;
-    }
 
     /**
      * Make query to eager load related tables

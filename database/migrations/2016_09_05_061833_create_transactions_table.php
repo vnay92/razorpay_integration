@@ -16,6 +16,7 @@ class CreateTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned();
             $table->integer('amount');
+            $table->string('order_id');
             $table->string('status');
             $table->timestamps();
 

@@ -9,10 +9,12 @@ class TransactionsGateway
 {
     public function __construct(
         Auth $auth,
+        PaymentGateway $paymentGateway,
         TransactionsRepository $transactionsRepository
     ) {
         $this->transactionsRepository = $transactionsRepository;
         $this->auth = $auth;
+        $this->paymentGateway = $paymentGateway;
     }
 
     public function getAll()
@@ -42,9 +44,39 @@ class TransactionsGateway
 
         if($transaction_created) {
             $order_data = $this->getOrderData($transaction_created);
-            return $this->paymentGateway->createOrder();
+            $order_id = $this->paymentGateway->createOrder($order_data);
+
+            $this->transactionsRepository->update($transaction_created['id'], [
+                'status' => 'ORDER_CREATED',
+                'order_id' => $order_id
+            ]);
+
+            return [
+                'status' => 'SUCCESS',
+                'order_id' => $order_id
+            ];
         }
     }
+
+    public function handle($payment_id)
+    {
+        $payment = $this->paymentGateway->getPayment($payment_id);
+
+        $data_to_update = [
+            'order_id' => $payment->order_id,
+            'status' => $payment->status
+        ];
+
+        $transaction = $this->transactionsRepository->getByOrderId($payment->order_id);
+        dd($transaction);
+        $this->transactionsRepository->update($transaction['id'], $data_to_update);
+    }
+
+    public function capturePayment($transaction_id, $order_id, $payment_id)
+    {
+        // $transa
+    }
+
     private function getOrderData($transaction)
     {
         return [

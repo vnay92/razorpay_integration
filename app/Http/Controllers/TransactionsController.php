@@ -34,4 +34,9 @@ class TransactionsController extends Controller
         return response()->json($response);
     }
 
+    public function update($id)
+    {
+        $response = $this->transactionsGateway->update($id);
+        return response()->json($response);
+    }
 }

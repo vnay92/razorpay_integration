@@ -16,7 +16,8 @@ class AppMiddleware
     public function handle($request, Closure $next)
     {
         config([
-            'key' => env('RZP_KEY', null)
+            'key' => env('RZP_KEY', null),
+            'secret' => env('RZP_SECRET', null)
         ]);
 
         return $next($request);

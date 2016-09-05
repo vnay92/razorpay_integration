@@ -19,7 +19,7 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/test', function () {
-    // $config = config('key');
+    $config = config('key');
     return response()->json(config());
 });
 
@@ -28,6 +28,9 @@ $app->group(['namespace' => 'App\Http\Controllers','middleware' => ['auth'], 'pr
     $app->get('/transactions', 'TransactionsController@getAll');
     $app->get('/transactions/{id}', 'TransactionsController@getById');
     $app->post('/transactions', 'TransactionsController@create');
+    $app->post('/transactions/{id}', 'TransactionsController@create');
+
+    $app->get('/payments/handle', 'PaymentsController@handle');
 });
 
 $app->group(['middleware' => ['auth']], function () use ($app) {
