@@ -14,11 +14,11 @@ class TransactionsGateway
 
     public function getAll()
     {
-        return $this->transactionsRepository->getAll();
+        return $this->transactionsRepository->getAll(['user']);
     }
 
     public function getById($id)
     {
-        return $this->transactionsRepository->getById($id);
+        return $this->transactionsRepository->getById($id, ['user']);
     }
 }

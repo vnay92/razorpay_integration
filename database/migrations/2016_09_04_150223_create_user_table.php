@@ -21,7 +21,6 @@ class CreateUserTable extends Migration
         });
 
         // Seeding some sample data
-        $faker = Faker\Factory::create();
         DB::table('users')->insert([
             'id' => 1,
             'name' => 'Vinay',

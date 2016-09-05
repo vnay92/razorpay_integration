@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Users as Model;
+use App\Models\Transactions as Model;
 
 class TransactionsRepository extends AbstractRepository
 {

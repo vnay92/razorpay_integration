@@ -27,10 +27,12 @@ $app->get('/test', function () {
 $app->group(['namespace' => 'App\Http\Controllers','middleware' => ['auth'], 'prefix' => 'api'], function () use ($app) {
     $app->get('/transactions', 'TransactionsController@getAll');
     $app->get('/transactions/{id}', 'TransactionsController@getById');
+    $app->post('/transactions', 'TransactionsController@create');
 });
 
 $app->group(['middleware' => ['auth']], function () use ($app) {
     $app->get('/checkout', function() {
         $user = Auth::user();
+        return view('checkout', ['data' => $user]);
     });
 });

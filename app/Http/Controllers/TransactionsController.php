@@ -23,4 +23,13 @@ class TransactionsController extends Controller
         $response = $this->transactionsGateway->getById($id);
         return response()->json($response);
     }
+
+    public function create()
+    {
+        return response()->json([
+            'status' => 200,
+            'message' => 'done'
+        ]);
+    }
+
 }
