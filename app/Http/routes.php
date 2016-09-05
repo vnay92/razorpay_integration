@@ -12,5 +12,25 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return response()->json([
+        'status' => 'SUCCESS',
+        'message' => 'All Izz Well!'
+    ]);
+});
+
+$app->get('/test', function () {
+    // $config = config('key');
+    return response()->json(config());
+});
+
+// APIs
+$app->group(['namespace' => 'App\Http\Controllers','middleware' => ['auth'], 'prefix' => 'api'], function () use ($app) {
+    $app->get('/transactions', 'TransactionsController@getAll');
+    $app->get('/transactions/{id}', 'TransactionsController@getById');
+});
+
+$app->group(['middleware' => ['auth']], function () use ($app) {
+    $app->get('/checkout', function() {
+        $user = Auth::user();
+    });
 });
