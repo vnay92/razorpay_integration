@@ -88,7 +88,7 @@ class TransactionsGateway
         $this->transactionsRepository->update($transaction['id'], $data_to_update);
 
         $captured = $this->capturePayment($payment_id, $transaction['amount']);
-        if(isset($captured['status'])) {
+        if(isset($captured['status']) && $captured['status'] === 500) {
             return $captured;
         }
 
