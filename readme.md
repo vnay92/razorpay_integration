@@ -1,21 +1,32 @@
-# Lumen PHP Framework
+# Sample Razorpay API integration
+Built on Lumen - a Microframework of PHP (because, Laravel would be an overkill and Slim doesn't have Dependency Injection :P)
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+## Requirements
+ - Ubuntu >= 14.04
+ - PHP >= 5.3
+ - Composer for PHP
+ - MySQL
+ - Apache 2.4 /Nginx
+ - Razorpay Keys
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Setup
+### Script
 
-## Official Documentation
+    bash setup.sh
+or
 
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
+    ./setup.sh
 
-## Security Vulnerabilities
+### Manually
+Follow the commands in `script.sh` ;)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+## Structure
+A variant of the Gateways, Repository pattern.
 
-## License
+UI/API -> Routes -> Middleware -> Controller -> Gateways -> Repositories -> Model -> DB
 
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+### Points to note
+ - Point Apache to the `public/` folder. (You might want to create a new `.conf` file)
+ - All APIs have a common middleware
+ - Make sure you have the `.env` file set up properly
+ - Gateways have the business logic
