@@ -21,6 +21,7 @@ class PaymentsController extends Controller
     public function handle()
     {
         $input = $this->request->all();
-        return $this->transactionsGateway->handle($input['payment_id']);
+        $response = $this->transactionsGateway->handle($input['payment_id']);
+        return response()->json($response);
     }
 }

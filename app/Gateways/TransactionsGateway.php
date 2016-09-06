@@ -60,11 +60,18 @@ class TransactionsGateway
 
     public function handle($payment_id)
     {
-        $payment = $this->paymentGateway->getPayment($payment_id);
+        if(empty($payment_id)){
+            return [
+                'status' => 500,
+                'message' => 'Wrong Input Man'
+            ];
+        }
 
         try {
+            $payment = $this->paymentGateway->getPayment($payment_id);
             $transaction = $this->transactionsRepository->getByOrderId($payment->order_id);
             $this->verifyTransaction($transaction);
+
         } catch (\Exception $e) {
             return [
                 'status' => 500,
@@ -75,7 +82,7 @@ class TransactionsGateway
         $data_to_update = [
             'order_id' => $payment->order_id,
             'payment_id' => $payment_id,
-            'status' => $payment->status
+            'status' => strtoupper($payment->status)
         ];
 
         $this->transactionsRepository->update($transaction['id'], $data_to_update);
