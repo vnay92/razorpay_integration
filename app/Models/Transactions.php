@@ -14,6 +14,7 @@ class Transactions extends Model
         'amount',
         'user_id',
         'order_id',
+        'payment_id',
         'status'
     ];
 

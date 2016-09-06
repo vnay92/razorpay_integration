@@ -62,19 +62,56 @@ class TransactionsGateway
     {
         $payment = $this->paymentGateway->getPayment($payment_id);
 
+        try {
+            $transaction = $this->transactionsRepository->getByOrderId($payment->order_id);
+            $this->verifyTransaction($transaction);
+        } catch (\Exception $e) {
+            return [
+                'status' => 500,
+                'message' => $e->getMessage()
+            ];
+        }
+
         $data_to_update = [
             'order_id' => $payment->order_id,
+            'payment_id' => $payment_id,
             'status' => $payment->status
         ];
 
-        $transaction = $this->transactionsRepository->getByOrderId($payment->order_id);
-        dd($transaction);
         $this->transactionsRepository->update($transaction['id'], $data_to_update);
+
+        $captured = $this->capturePayment($payment_id, $transaction['amount']);
+        if(isset($captured['status'])) {
+            return $captured;
+        }
+
+        $this->transactionsRepository->update($transaction['id'], [
+            'status' => 'COMPLETED'
+        ]);
+
+        return [
+            'status' => 200,
+            'message' => 'Transaction Complete'
+        ];
     }
 
-    public function capturePayment($transaction_id, $order_id, $payment_id)
+    public function capturePayment($payment_id, $amount)
     {
-        // $transa
+        try {
+            return $this->paymentGateway->capturePayment($payment_id, $amount);
+        } catch (\Exception $e) {
+            return [
+                'status' => 500,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    private function verifyTransaction($transaction)
+    {
+        if($transaction['status'] != 'ORDER_CREATED') {
+            throw new \Exception('Transaction is invalid');
+        }
     }
 
     private function getOrderData($transaction)

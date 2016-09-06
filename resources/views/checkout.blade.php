@@ -14,18 +14,20 @@
 
 <script>
 
+    var displayMessage = function(response) {
+        alert(response.message);
+    };
+
     var handlePayment = function(response) {
+        alert('Please wait while we verify the payment');
         var ajaxOptions = {
-            url: '/api/payments/handle',
+            url: '/api/payments/handle?payment_id=' + response.razorpay_payment_id,
             type:'GET',
-            qs: {
-                payment_id: response.razorpay_payment_id
-            },
             dataType: 'json',
         };
 
         var xhr = $.ajax(ajaxOptions);
-        xhr.done(callback);
+        xhr.done(displayMessage);
     };
 
     var createOrder = function (amount, callback) {
@@ -78,6 +80,7 @@
 
         // Convert to paise
         options.amount = parseInt(amount) * 100;
+        alert('Please wait while we initiate the payment');
         createOrder(options.amount, function(data) {
             if(data.status != 'SUCCESS') {
                 alert(data.message);
